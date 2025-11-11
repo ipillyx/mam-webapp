@@ -7,6 +7,7 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("mam_token") || "");
   const [username, setUsername] = useState("");
   const [loginForm, setLoginForm] = useState({ username: "", password: "" });
+  const [registerForm, setRegisterForm] = useState({ username: "", password: "", invite_code: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const [searchField, setSearchField] = useState("title");
   const [results, setResults] = useState([]);
@@ -14,35 +15,14 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [toasts, setToasts] = useState([]);
 
-  // --- Toast System ---
-  const showToast = (text, type = "info", duration = 4000) => {
+  const addToast = (text, type = "info") => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, text, type }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, duration);
+    }, 4000);
   };
 
-  const ToastContainer = () => (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-72">
-      {toasts.map((toast) => (
-        <div
-          key={toast.id}
-          className={`toast animate-toastSlideIn p-3 rounded-xl shadow-lg text-sm text-white ${
-            toast.type === "success"
-              ? "bg-green-600"
-              : toast.type === "error"
-              ? "bg-red-600"
-              : "bg-rose/80"
-          }`}
-        >
-          {toast.text}
-        </div>
-      ))}
-    </div>
-  );
-
-  // --- Auth ---
   useEffect(() => {
     if (token) fetchMe(token);
   }, []);
@@ -56,21 +36,23 @@ function App() {
         const data = await res.json();
         setUsername(data.username);
         setPage("search");
-      } else logout();
-    } catch {
+      } else {
+        logout();
+      }
+    } catch (e) {
+      console.error("fetchMe error:", e);
       logout();
     }
   }
 
   function logout() {
-    localStorage.removeItem("mam_token");
     setToken("");
+    localStorage.removeItem("mam_token");
     setPage("login");
     setUsername("");
     setResults([]);
   }
 
-  // --- Login ---
   async function handleLogin(e) {
     e.preventDefault();
     setMessage("");
@@ -84,23 +66,29 @@ function App() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString(),
       });
+
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
         localStorage.setItem("mam_token", data.access_token);
         setToken(data.access_token);
         await fetchMe(data.access_token);
-      } else setMessage(data.detail || "Login failed");
-    } catch {
+      } else {
+        setMessage(String(data.detail || "Login failed"));
+        addToast("❌ Invalid login credentials", "error");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
       setMessage("Error logging in");
+      addToast("⚠️ Error logging in", "error");
     }
   }
 
-  // --- Search ---
   async function handleSearch(e) {
     e.preventDefault();
-    if (!searchTerm.trim()) return;
     setMessage("");
+    if (!searchTerm.trim()) return;
     setLoading(true);
+    addToast("🔍 Searching for audiobooks...", "info");
 
     try {
       const res = await fetch(
@@ -111,17 +99,20 @@ function App() {
       if (res.ok) {
         setResults(Array.isArray(data) ? data : []);
         if (!data.length) setMessage("No results found.");
-      } else setMessage(data.detail || "Search failed");
-    } catch {
+      } else {
+        setMessage(String(data.detail || "Search failed"));
+      }
+    } catch (err) {
+      console.error("Search error:", err);
       setMessage("Error searching");
+      addToast("⚠️ Error searching", "error");
     } finally {
       setLoading(false);
     }
   }
 
-  // --- Add torrent ---
   async function addTorrent(tid) {
-    showToast(`Adding torrent ${tid}...`, "info");
+    addToast(`📤 Sending torrent ${tid} to qBittorrent...`, "info");
     try {
       const res = await fetch(`${API_URL}/api/add`, {
         method: "POST",
@@ -132,33 +123,54 @@ function App() {
         body: JSON.stringify({ tid }),
       });
       const data = await res.json().catch(() => ({}));
-      if (res.ok) showToast(`✅ Torrent ${tid} added successfully!`, "success");
-      else showToast(`❌ ${data.detail || "Failed to add torrent"}`, "error");
-    } catch {
-      showToast("⚠️ Error adding torrent", "error");
+      if (res.ok) {
+        addToast(`✅ Torrent ${tid} added successfully!`, "success");
+      } else {
+        addToast(`❌ ${String(data.detail || "Failed to add torrent")}`, "error");
+      }
+    } catch (err) {
+      console.error("Add torrent error:", err);
+      addToast("⚠️ Error adding torrent", "error");
     }
   }
 
-  const gradientBg = "bg-gradient-to-b from-black via-[#130814] to-black";
+  const ToastContainer = () => (
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-72">
+      {toasts.map((toast) => (
+        <div
+          key={toast.id}
+          className={`animate-toastSlideIn p-3 rounded-xl shadow-lg text-sm text-white ${
+            toast.type === "success"
+              ? "bg-green-600"
+              : toast.type === "error"
+              ? "bg-red-600"
+              : "bg-rose/80"
+          }`}
+        >
+          {toast.text}
+        </div>
+      ))}
+    </div>
+  );
 
-  // --- Login Page ---
   if (page === "login") {
     return (
-      <div className={`${gradientBg} min-h-screen flex items-center justify-center text-roseSoft`}>
+      <div className="bg-black min-h-screen flex items-center justify-center text-roseSoft">
         <ToastContainer />
         <div className="w-full max-w-md bg-black/70 border border-rose/40 rounded-3xl p-8 shadow-2xl">
-          <h1 className="text-3xl font-serif text-center mb-6">MAM Library</h1>
-          {message && <div className="text-xs text-red-400 mb-3 text-center">{message}</div>}
+          <h1 className="text-3xl font-serif text-roseSoft text-center mb-6">MAM Library</h1>
+          <p className="text-sm text-center mb-4 text-roseSoft/80">Sign in to your private audiobook portal.</p>
+          {message && <div className="mb-3 text-xs text-red-400 text-center">{String(message)}</div>}
           <form onSubmit={handleLogin} className="space-y-3">
             <input
-              className="w-full px-3 py-2 rounded-xl bg-black/60 border border-rose/40 text-sm focus:outline-none focus:ring-2 focus:ring-rose"
+              className="w-full px-3 py-2 rounded-xl bg-black/60 border border-rose/40 text-roseSoft text-sm focus:outline-none focus:ring-2 focus:ring-rose"
               placeholder="Username"
               value={loginForm.username}
               onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
             />
             <input
               type="password"
-              className="w-full px-3 py-2 rounded-xl bg-black/60 border border-rose/40 text-sm focus:outline-none focus:ring-2 focus:ring-rose"
+              className="w-full px-3 py-2 rounded-xl bg-black/60 border border-rose/40 text-roseSoft text-sm focus:outline-none focus:ring-2 focus:ring-rose"
               placeholder="Password"
               value={loginForm.password}
               onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
@@ -175,20 +187,16 @@ function App() {
     );
   }
 
-  // --- Search Page ---
   return (
-    <div className={`${gradientBg} min-h-screen text-roseSoft flex flex-col`}>
+    <div className="bg-black min-h-screen text-roseSoft flex flex-col">
       <ToastContainer />
-
       <header className="flex items-center justify-between px-6 py-4 bg-black/60 border-b border-rose/30">
         <div>
-          <h1 className="text-2xl font-serif">MAM Library</h1>
+          <h1 className="text-2xl font-serif text-roseSoft">MAM Library</h1>
           <p className="text-xs text-roseSoft/70">Whispers, pages, and midnight audiobooks.</p>
         </div>
-        <div className="text-xs text-right">
-          <div className="text-roseSoft/80">
-            Signed in as <span className="font-semibold">{username}</span>
-          </div>
+        <div className="text-right text-xs">
+          <div className="text-roseSoft/80">Signed in as <span className="font-semibold">{username}</span></div>
           <button
             onClick={logout}
             className="mt-1 px-3 py-1 rounded-full border border-rose/60 text-roseSoft/80 hover:bg-rose/80 hover:text-black transition"
@@ -198,25 +206,16 @@ function App() {
         </div>
       </header>
 
-      <main className="flex-1 px-6 py-4 relative">
-        {loading && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-rose/50 border-t-transparent mx-auto mb-4"></div>
-              <p className="text-roseSoft font-serif text-lg">Searching for Audiobooks…</p>
-            </div>
-          </div>
-        )}
-
+      <main className="flex-1 px-6 py-4 animate-fadeIn">
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 mb-4">
           <input
             className="flex-1 px-4 py-2 rounded-2xl bg-black/70 border border-rose/40 text-sm focus:outline-none focus:ring-2 focus:ring-rose"
-            placeholder="Search audiobooks..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <select
-            className="px-3 py-2 rounded-2xl bg-black/70 border border-rose/40 text-sm focus:outline-none focus:ring-2 focus:ring-rose text-roseSoft"
+            className="px-3 py-2 rounded-2xl bg-black/70 border border-rose/40 text-sm text-roseSoft"
             value={searchField}
             onChange={(e) => setSearchField(e.target.value)}
           >
@@ -233,40 +232,30 @@ function App() {
           </button>
         </form>
 
-        {message && <div className="mb-3 text-xs text-roseSoft/80">{message}</div>}
+        {message && <div className="mb-3 text-xs text-roseSoft/80">{String(message)}</div>}
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {results.map((r) => (
             <div
               key={r.id}
-              className="bg-black/70 border border-rose/20 rounded-2xl p-3 hover:border-rose/60 transition flex flex-col justify-between"
+              className="card-hover bg-black/70 border border-rose/20 rounded-2xl p-3 hover:border-rose/60 transition flex flex-col justify-between animate-fadeIn"
             >
-              {r.cover && (
-                <a href={r.infoUrl} target="_blank" rel="noopener noreferrer">
-                  <img
-                    src={r.cover}
-                    alt={r.title}
-                    className="rounded-xl mb-3 w-full h-72 object-cover object-center shadow-lg"
-                  />
-                </a>
-              )}
-              <div className="flex-1">
-                <div className="text-base font-serif text-roseSoft mb-1">{r.title}</div>
-                {r.author && (
-                  <div className="text-xs text-roseSoft/80 mb-0.5">
-                    <span className="font-semibold">Author:</span> {r.author}
-                  </div>
-                )}
-                {r.series && (
-                  <div className="text-xs italic text-roseSoft/70 mb-0.5">{r.series}</div>
-                )}
-                <div className="text-[10px] text-roseSoft/70">
-                  {r.category} • {r.size || "Unknown size"}
-                </div>
-                <div className="text-[10px] text-roseSoft/60 mt-1">
-                  Seeders: {r.seeders} • Filetypes: {r.filetypes || "n/a"}
-                </div>
+              <div className="relative flex justify-center items-center bg-black/40 rounded-xl overflow-hidden mb-3 aspect-[3/4]">
+                <img
+                  src={r.cover}
+                  alt={r.title}
+                  className="w-full h-full object-contain p-2 transition-transform duration-300 hover:scale-105"
+                />
               </div>
+
+              <div className="flex-1">
+                <div className="text-sm font-serif text-roseSoft mb-1">{r.title}</div>
+                {r.author && <div className="text-xs text-roseSoft/80 mb-0.5"><span className="font-semibold">Author:</span> {r.author}</div>}
+                {r.series && <div className="text-xs italic text-roseSoft/70 mb-0.5">{r.series}</div>}
+                <div className="text-[10px] text-roseSoft/70">{r.category} • {r.size || "Unknown size"}</div>
+                <div className="text-[10px] text-roseSoft/60 mt-1">Seeders: {r.seeders} • Filetypes: {r.filetypes || "n/a"}</div>
+              </div>
+
               <div className="mt-3">
                 <button
                   onClick={() => addTorrent(r.id)}

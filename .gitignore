@@ -31,3 +31,11 @@ yarn-error.log*
 # Docker
 *.pid
 *.log
+
+# macOS metadata files
+._*
+.DS_Store
+
+# Env files
+.env
+*.env
