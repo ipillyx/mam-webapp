@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  mam-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mam-backend
+    env_file: ./backend/.env
+    ports:
+      - "5747:5747"
+    volumes:
+      - ./data:/data
+    networks:
+      - media
+    restart: unless-stopped
+
+  mam-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: "https://api.pilly.uk"
+    container_name: mam-frontend
+    ports:
+      - "5050:5050"
+    depends_on:
+      - mam-backend
+    networks:
+      - media
+    restart: unless-stopped
+
+networks:
+  media:
+    external: true
+
+    

@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Global Styles --- */
+body {
+  @apply bg-black text-roseSoft antialiased min-h-screen;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* --- Toast Animations --- */
+@keyframes toastSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(120%) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-6px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-toastSlideIn {
+  animation: toastSlideIn 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.toast:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}
+
+/* --- Spinner Animation --- */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* --- Scrollbar Styling --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 192, 203, 0.4);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 192, 203, 0.6);
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
