@@ -20,7 +20,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: "https://api.pilly.uk"
+        VITE_API_URL: "https://host.example.com"
     container_name: mam-frontend
     ports:
       - "5050:5050"
