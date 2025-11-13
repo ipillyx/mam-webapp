@@ -2,63 +2,132 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- Global Styles --- */
+/* ======================================
+   GLOBAL BODY / BACKGROUND
+====================================== */
 body {
-  @apply bg-black text-roseSoft antialiased min-h-screen;
+  @apply text-emerald-200 antialiased min-h-screen bg-black;
+  background: radial-gradient(circle at 50% 10%, #02280f, #000);
 }
 
 html, body {
   overflow-x: hidden;
 }
 
-/* --- Toast Animations --- */
+/* ======================================
+   GENERIC CARD
+====================================== */
+.card {
+  @apply bg-black/70 border border-emerald-600/20 rounded-2xl p-4 
+         backdrop-blur-xl shadow-lg transition-all duration-300;
+}
+
+.card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+  border-color: rgba(16, 185, 129, 0.6) !important;
+}
+
+/* ======================================
+   BUTTONS
+====================================== */
+.btn {
+  @apply rounded-2xl py-2 px-6 font-semibold text-black transition-all duration-200;
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.btn:hover {
+  filter: brightness(1.15);
+  transform: scale(1.03);
+}
+
+/* Smaller Button */
+.btn-sm {
+  @apply text-xs py-1.5 px-4;
+}
+
+/* Outline Button */
+.btn-outline {
+  @apply border border-emerald-500/50 text-emerald-400 py-1 px-4 rounded-full;
+}
+
+.btn-outline:hover {
+  @apply bg-emerald-500 text-black;
+}
+
+/* ======================================
+   TOASTS
+====================================== */
 @keyframes toastSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(120%) scale(0.9);
-  }
-  60% {
-    opacity: 1;
-    transform: translateX(-6px) scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+  0% { opacity: 0; transform: translateX(100%) scale(0.95); }
+  60% { opacity: 1; transform: translateX(-5px) scale(1.03); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 .animate-toastSlideIn {
-  animation: toastSlideIn 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  animation: toastSlideIn 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
-.toast:hover {
-  filter: brightness(1.1);
-  transform: scale(1.02);
-  transition: all 0.2s ease-in-out;
+.toast {
+  @apply backdrop-blur-md rounded-xl p-3 shadow-xl text-sm text-white;
 }
 
-/* --- Spinner Animation --- */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.toast-success {
+  @apply bg-emerald-600/90;
 }
 
-.animate-spin {
-  animation: spin 1s linear infinite;
+.toast-error {
+  @apply bg-red-600/90;
 }
 
-/* --- Scrollbar Styling --- */
+.toast-info {
+  @apply bg-emerald-500/80;
+}
+
+/* ======================================
+   INPUT FIELDS
+====================================== */
+.input {
+  @apply w-full px-3 py-2 rounded-xl bg-black/70 border border-emerald-600/40 
+         text-emerald-200 text-sm focus:border-emerald-400 focus:outline-none;
+}
+
+/* ======================================
+   SELECT DROPDOWN
+====================================== */
+.select {
+  @apply px-3 py-2 rounded-2xl bg-black/80 border border-emerald-600/40 
+         text-xs text-emerald-200 focus:border-emerald-400;
+}
+
+/* ======================================
+   SCROLLBAR
+====================================== */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 192, 203, 0.4);
+  background-color: rgba(16, 185, 129, 0.4);
   border-radius: 8px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 192, 203, 0.6);
+  background-color: rgba(16, 185, 129, 0.7);
 }
+
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ======================================
+   SMALL UTILITY ANIMATIONS
+====================================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.35s ease-out;
 }
