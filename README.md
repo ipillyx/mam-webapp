@@ -139,10 +139,9 @@ You can expose both services via **Nginx Proxy Manager** (or Caddy, Traefik, etc
 
 —
 
-<img width="1902" height="962" alt="Screenshot 2025-11-11 at 21 30 39" src="https://github.com/user-attachments/assets/8e464655-27ea-43bc-9448-8097c2009a78" />
+<img width="1920" height="898" alt="image" src="https://github.com/user-attachments/assets/1b3c6b43-f5ed-4acd-8478-5c3771edf5d7" />
 
-<img width="1435" height="579" alt="Screenshot 2025-11-11 at 14 31 16" src="https://github.com/user-attachments/assets/4764e1ad-b3f6-46f2-a7e6-4aabf6b655e5" />
-
+<img width="1881" height="1043" alt="image" src="https://github.com/user-attachments/assets/2beea17c-f630-445e-9342-364df8f2fad3" />
 
 
 ## 🧠 Credits
