@@ -6,6 +6,8 @@
 # Database
 *.db
 *.sqlite3
+backend/data/app.db
+backend/data/*.db
 
 # VSCode
 .vscode/
@@ -24,3 +26,4 @@ venv/
 
 # macOS
 .DS_Store
+._*
