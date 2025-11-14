@@ -1,0 +1,25 @@
+0000000000000000000000000000000000000000 480c385a995fc7295a8dc5c58344104718b9bd38 ipillyx <shaunpilgrimx@gmail.com> 1762870690 +0000	commit (initial): Initial commit: working MAM WebApp (frontend + backend + Docker)
+480c385a995fc7295a8dc5c58344104718b9bd38 0000000000000000000000000000000000000000 ipillyx <shaunpilgrimx@gmail.com> 1762870705 +0000	Branch: renamed refs/heads/master to refs/heads/main
+0000000000000000000000000000000000000000 480c385a995fc7295a8dc5c58344104718b9bd38 ipillyx <shaunpilgrimx@gmail.com> 1762870705 +0000	Branch: renamed refs/heads/master to refs/heads/main
+480c385a995fc7295a8dc5c58344104718b9bd38 0000000000000000000000000000000000000000 ipillyx <shaunpilgrimx@gmail.com> 1762870738 +0000	Branch: renamed refs/heads/main to refs/heads/main
+480c385a995fc7295a8dc5c58344104718b9bd38 480c385a995fc7295a8dc5c58344104718b9bd38 ipillyx <shaunpilgrimx@gmail.com> 1762870738 +0000	Branch: renamed refs/heads/main to refs/heads/main
+480c385a995fc7295a8dc5c58344104718b9bd38 e5706e79bcbf3b8dceebfe3b1cc4a9e4dd509083 ipillyx <shaunpilgrimx@gmail.com> 1762871167 +0000	commit: Clean project structure
+0000000000000000000000000000000000000000 2288cd55d026efef03febc883065896a5c14cd29 ipillyx <shaunpilgrimx@gmail.com> 1762871167 +0000	commit (initial): Initial clean commit
+2288cd55d026efef03febc883065896a5c14cd29 0000000000000000000000000000000000000000 ipillyx <shaunpilgrimx@gmail.com> 1762871167 +0000	Branch: renamed refs/heads/clean-main to refs/heads/main
+0000000000000000000000000000000000000000 2288cd55d026efef03febc883065896a5c14cd29 ipillyx <shaunpilgrimx@gmail.com> 1762871167 +0000	Branch: renamed refs/heads/clean-main to refs/heads/main
+2288cd55d026efef03febc883065896a5c14cd29 445f79b15a3568642aff077653df7c4c0a29b927 ipillyx <shaunpilgrimx@gmail.com> 1762871246 +0000	commit: Remove unwanted macOS resource files
+445f79b15a3568642aff077653df7c4c0a29b927 5bbafd34d2c2706aa738062fa8db9d96086c635f ipillyx <shaunpilgrimx@gmail.com> 1762885420 +0000	commit: ✨ Fix frontend layout, full-size covers, toast system, and rebuild-ready Docker setup
+5bbafd34d2c2706aa738062fa8db9d96086c635f 8bf898414656d2c89578ad81ae3141ce4b3c79a5 ipillyx <shaunpilgrimx@gmail.com> 1762896408 +0000	commit: 🔥 Remove app.db from repo and add to .gitignore
+8bf898414656d2c89578ad81ae3141ce4b3c79a5 e48b5388fe3f9250290b7c14259f400ba93e476e ipillyx <shaunpilgrimx@gmail.com> 1762995674 +0000	commit: Added signup with invite code, emerald UI overhaul, Tailwind updates
+e48b5388fe3f9250290b7c14259f400ba93e476e 04338b1b746e5ba2b6aee9e72c7c875b4b70d5fb ipillyx <shaunpilgrimx@gmail.com> 1762995756 +0000	commit: UI refresh, emerald theme, restored signup, bug fixes
+04338b1b746e5ba2b6aee9e72c7c875b4b70d5fb 27ffec9418d3de813530dbcbf462ed35481cb896 ipillyx <shaunpilgrimx@gmail.com> 1762995766 +0000	pull --rebase origin main (start): checkout 27ffec9418d3de813530dbcbf462ed35481cb896
+27ffec9418d3de813530dbcbf462ed35481cb896 b8948487ab8911324a91a80023dc2e2f739d96b5 ipillyx <shaunpilgrimx@gmail.com> 1762995766 +0000	pull --rebase origin main (pick): Added signup with invite code, emerald UI overhaul, Tailwind updates
+b8948487ab8911324a91a80023dc2e2f739d96b5 4e29f8b558059970240609fcfe8fc0ca27dda8fa ipillyx <shaunpilgrimx@gmail.com> 1762995766 +0000	pull --rebase origin main (pick): UI refresh, emerald theme, restored signup, bug fixes
+4e29f8b558059970240609fcfe8fc0ca27dda8fa 4e29f8b558059970240609fcfe8fc0ca27dda8fa ipillyx <shaunpilgrimx@gmail.com> 1762995766 +0000	pull --rebase origin main (finish): returning to refs/heads/main
+4e29f8b558059970240609fcfe8fc0ca27dda8fa 27862c07649f0627d26b236c614124f270d2884a ipillyx <shaunpilgrimx@gmail.com> 1762995852 +0000	commit: Remove macOS resource-fork files
+27862c07649f0627d26b236c614124f270d2884a 638081a4a5c8bf8cf41be1f15d0b145dcacc42f9 ipillyx <shaunpilgrimx@gmail.com> 1762998414 +0000	commit: Remove database file from repo (should not be tracked)
+638081a4a5c8bf8cf41be1f15d0b145dcacc42f9 b4f7957c91c46259ebf5324acf5bceed67aa6643 ipillyx <shaunpilgrimx@gmail.com> 1762998452 +0000	commit: Remove DB file and update UI signup fixes
+b4f7957c91c46259ebf5324acf5bceed67aa6643 af8573e3ec2cc38e54cae0d01993563148958cae ipillyx <shaunpilgrimx@gmail.com> 1762998459 +0000	pull --rebase origin main (start): checkout af8573e3ec2cc38e54cae0d01993563148958cae
+af8573e3ec2cc38e54cae0d01993563148958cae 42fdfa3c37e90bc43f3c0b0c7f0392bfd8531f34 ipillyx <shaunpilgrimx@gmail.com> 1762998459 +0000	pull --rebase origin main (pick): Remove database file from repo (should not be tracked)
+42fdfa3c37e90bc43f3c0b0c7f0392bfd8531f34 8cb430c58720fafde74fd747991097cda66b5dca ipillyx <shaunpilgrimx@gmail.com> 1762998459 +0000	pull --rebase origin main (pick): Remove DB file and update UI signup fixes
+8cb430c58720fafde74fd747991097cda66b5dca 8cb430c58720fafde74fd747991097cda66b5dca ipillyx <shaunpilgrimx@gmail.com> 1762998459 +0000	pull --rebase origin main (finish): returning to refs/heads/main
