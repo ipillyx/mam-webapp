@@ -81,12 +81,13 @@ export default function App() {
 
   /* Load user from token automatically */
   useEffect(() => {
-    if (!token) return;
-    const payload = parseJwt(token);
-    if (!payload || !payload.sub) return;
-    setUsername(payload.sub);
-    setPage("search");
-  }, []);
+  if (!token) return;
+  const payload = parseJwt(token);
+  if (!payload || !payload.sub) return;
+  setUsername(payload.sub);
+  setPage("search");
+}, [token]);
+
 
   /* Logout */
   const logout = () => {
