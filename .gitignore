@@ -2,6 +2,7 @@
 .env
 .env.*
 !example.env
+cookies.txt
 
 # Database
 *.db

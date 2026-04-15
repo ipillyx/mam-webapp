@@ -5,3 +5,4 @@ pydantic
 requests
 pyjwt
 python-multipart
+apscheduler>=3.10.0

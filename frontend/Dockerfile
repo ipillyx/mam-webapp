@@ -8,9 +8,10 @@ COPY package*.json vite.config.mjs tailwind.config.cjs postcss.config.cjs ./
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the app
+# Copy the rest of the app, including the public folder
 COPY index.html ./
 COPY src ./src
+COPY public ./public
 
 # Accept build-time variable (from docker-compose args)
 ARG VITE_API_URL
@@ -23,19 +24,16 @@ RUN echo "🔧 Building frontend with API URL: $VITE_API_URL" && npm run build
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
-# Copy built static files from previous stage
+# Copy built static files from previous stage (the main app files)
 COPY --from=build /app/dist ./
 
-# Custom minimal nginx config
-RUN printf 'server {\n\
-    listen 5050;\n\
-    server_name _;\n\
-    root /usr/share/nginx/html;\n\
-    index index.html;\n\
-    location / {\n\
-        try_files $uri /index.html;\n\
-    }\n\
-}\n' > /etc/nginx/conf.d/default.conf
+# CRITICAL FIX: Explicitly copy the public directory contents from the build stage 
+# to the Nginx root. This ensures dark_romance_banner.png is available at /
+COPY --from=build /app/public ./
+
+# Custom minimal nginx config - FIXED WHITESPACE ISSUE
+# Uses \n and \t for explicit newlines and tabs to prevent hidden characters from crashing Nginx.
+RUN printf 'server {\n\tlisten 5050;\n\tserver_name _;\n\troot /usr/share/nginx/html;\n\tindex index.html;\n\tlocation / {\n\t\ttry_files $uri /index.html;\n\t}\n}\n' > /etc/nginx/conf.d/default.conf
 
 EXPOSE 5050
 CMD ["nginx", "-g", "daemon off;"]
